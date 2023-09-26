@@ -3,7 +3,7 @@ service: kamalify
 image: robzolkos/kamalify
 
 servers:
-  - 204.48.31.19
+  - 137.184.192.228
 
 registry:
   server: registry.digitalocean.com
