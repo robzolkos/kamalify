@@ -3,13 +3,7 @@ service: kamalify
 image: robzolkos/kamalify
 
 servers:
-  web:
-    hosts:
-      - 204.48.31.19
-    labels:
-      traefik.http.routers.domain.rule: Host(`kamalify.com`)
-      traefik.http.routers.domain.entrypoints: websecure
-      traefik.http.routers.domain.tls.certresolver: letsencrypt
+  - 204.48.31.19
 
 registry:
   server: registry.digitalocean.com
@@ -23,23 +17,3 @@ env:
 
 volumes:
   - storage:/rails/storage
-
-traefik:
-  options:
-    publish:
-      # Do not add 80:80, as it added by default
-      - "443:443"
-    volume:
-      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
-  args:
-    entryPoints.web.address: ":80"
-    entryPoints.websecure.address: ":443"
-    entryPoints.web.http.redirections.entryPoint.to: websecure
-    entryPoints.web.http.redirections.entryPoint.scheme: https
-    entryPoints.web.http.redirections.entrypoint.permanent: true
-    entrypoints.websecure.http.tls: true
-    entrypoints.websecure.http.tls.domains[0].main: "kamalify.com"
-    certificatesResolvers.letsencrypt.acme.email: "robzolkos@hey.com"
-    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
-    certificatesResolvers.letsencrypt.acme.httpchallenge: true
-    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
